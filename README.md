@@ -27,3 +27,4 @@ non à l’issu de ce projet.
 - Jules Ginhac : Equipe de développement
 - Valentin Henry : Scrum Master
 - Jessica Ndiaye : Equipe de développement
+
