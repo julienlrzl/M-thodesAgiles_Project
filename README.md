@@ -1,7 +1,7 @@
 # Méthodes Agiles - Projet
 
 ## Introduction
-
+ 
 Une bibliothèque dans un village du Massif Central souhaite s’équiper d’une nouvelle
 application informatique afin de répondre à différents besoins.  
 La solution proposée devra dans un 1er temps :  
