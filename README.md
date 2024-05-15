@@ -22,9 +22,9 @@ non à l’issu de ce projet.
 
 - Julien Larzul : Equipe de développement
 - Salim Lazrak : Equipe de développement
-- Albin Martin : Product Owner
+- Albin Martin : Equipe de développement
 - Fazia Mahmoud : Equipe de développement
-- Jules Ginhac : Equipe de développement
+- Jules Ginhac : Product Owner
 - Valentin Henry : Scrum Master
 - Jessica Ndiaye : Equipe de développement
 
