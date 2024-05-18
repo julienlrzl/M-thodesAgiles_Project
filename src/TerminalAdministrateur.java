@@ -10,7 +10,7 @@ public class TerminalAdministrateur {
     public void lancerInterface() {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Interface Administrateur de la Bibliothèque");
-        
+
         boolean continuer = true;
         while (continuer) {
             System.out.println("\nQue souhaitez-vous faire?");

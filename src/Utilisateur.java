@@ -1,4 +1,6 @@
-public class Utilisateur {
+import java.io.Serializable;
+public class Utilisateur implements Serializable {
+    private static final long serialVersionUID = 1L;
     private String nom;
     private String prenom;
     private String id;

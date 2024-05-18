@@ -45,9 +45,17 @@ public class TerminalUtilisateur {
     }
 
     private void connecterUtilisateur(String userId) {
-        // Simulation simple: création d'un nouvel utilisateur avec l'ID fourni.
-        utilisateurCourant = new Utilisateur("Nom_" + userId, "Prenom_" + userId, userId);
-        System.out.println("Utilisateur connecté: " + utilisateurCourant.getNom());
+        // Recherche de l'utilisateur par ID
+        utilisateurCourant = gestionnaire.getUtilisateurs().stream()
+            .filter(u -> u.getId().equals(userId))
+            .findFirst()
+            .orElse(null);
+        if (utilisateurCourant != null) {
+            System.out.println("Utilisateur connecté: " + utilisateurCourant.getNom());
+        } else {
+            System.out.println("Utilisateur non trouvé, connexion en tant qu'invité.");
+            utilisateurCourant = new Utilisateur("Invité", "", userId); // Connexion en tant qu'invité
+        }
     }
 
     private void rechercherLivres(Scanner scanner) {
@@ -67,16 +75,6 @@ public class TerminalUtilisateur {
     private void reserverLivre(Scanner scanner) {
         System.out.println("Entrez l'ISBN du livre que vous souhaitez réserver:");
         String isbn = scanner.nextLine();
-        List<Livre> livres = gestionnaire.getLivres();
-        Livre livre = livres.stream()
-                            .filter(l -> l.getISBN().equals(isbn))
-                            .findFirst()
-                            .orElse(null);
-        if (livre != null && !livre.isReserve()) {
-            livre.reserver();
-            System.out.println("Vous avez réservé le livre: " + livre.getTitre());
-        } else {
-            System.out.println("Livre non trouvé ou déjà réservé.");
-        }
+        gestionnaire.reserverLivre(isbn);
     }
 }
