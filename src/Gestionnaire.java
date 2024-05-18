@@ -52,4 +52,8 @@ public class Gestionnaire {
             }
         }
     }
+
+    public List<Livre> getLivres() {
+        return livres;
+    }
 }
