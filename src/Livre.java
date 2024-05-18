@@ -15,8 +15,16 @@ public class Livre {
         return titre;
     }
 
+    public void setTitre(String titre) {
+        this.titre = titre;
+    }
+
     public String getAuteur() {
         return auteur;
+    }
+
+    public void setAuteur(String auteur) {
+        this.auteur = auteur;
     }
 
     public String getISBN() {
