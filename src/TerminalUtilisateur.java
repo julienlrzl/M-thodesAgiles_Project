@@ -73,8 +73,10 @@ public class TerminalUtilisateur {
     }
 
     private void reserverLivre(Scanner scanner) {
-        System.out.println("Entrez l'ISBN du livre que vous souhaitez réserver:");
-        String isbn = scanner.nextLine();
-        gestionnaire.reserverLivre(isbn);
+        System.out.println("Entrez le titre du livre à réserver:");
+        String titre = scanner.nextLine();
+        System.out.println("Entrez l'auteur du livre à réserver:");
+        String auteur = scanner.nextLine();
+        gestionnaire.reserverLivre(titre, auteur);
     }
 }
