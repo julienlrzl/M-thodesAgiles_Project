@@ -65,13 +65,15 @@ public class TerminalAdministrateur {
         System.out.println("Liste des livres réservés:");
         gestionnaire.getLivres().stream()
             .filter(Livre::isReserve)
-            .forEach(livre -> System.out.println(livre.getTitre() + " par " + livre.getAuteur() + " - ISBN: " + livre.getISBN()));
+            .forEach(livre -> System.out.println(livre.getTitre() + " par " + livre.getAuteur()));
     }
 
     private void validerRetourLivre(Scanner scanner) {
-        System.out.println("Entrer l'ISBN du livre retourné:");
-        String isbn = scanner.nextLine();
-        gestionnaire.validerRetour(isbn);
+        System.out.println("Entrer le titre du livre à valider:");
+        String titre = scanner.nextLine();
+        System.out.println("Entrer l'auteur du livre à valider:");
+        String auteur = scanner.nextLine();
+        gestionnaire.validerRetour(titre, auteur);
     }
 
     private void ajouterLivre(Scanner scanner) {
@@ -79,20 +81,36 @@ public class TerminalAdministrateur {
         String titre = scanner.nextLine();
         System.out.println("Entrer l'auteur du livre:");
         String auteur = scanner.nextLine();
-        System.out.println("Entrer l'ISBN du livre:");
-        String isbn = scanner.nextLine();
-        gestionnaire.ajouterLivre(new Livre(titre, auteur, isbn));
-        System.out.println("Livre ajouté avec succès.");
+        System.out.println("Entrer l'édition du livre:");
+        String edition = scanner.nextLine();
+        System.out.println("Entrer l'année de parution du livre:");
+        int anneeParution = Integer.parseInt(scanner.nextLine());
+        System.out.println("Entrer le genre du livre:");
+        String genre = scanner.nextLine();
+        System.out.println("Entrer l'emplacement du livre:");
+        String emplacement = scanner.nextLine();
+        Livre livre = new Livre(titre, auteur, edition, anneeParution, genre, emplacement);
+        gestionnaire.ajouterLivre(livre);
     }
 
     private void modifierLivre(Scanner scanner) {
-        System.out.println("Entrer l'ISBN du livre à modifier:");
-        String isbn = scanner.nextLine();
-        System.out.println("Entrer le nouveau titre:");
+        System.out.println("Entrer le titre du livre à modifier:");
+        String titre = scanner.nextLine();
+        System.out.println("Entrer l'auteur du livre à modifier:");
+        String auteur = scanner.nextLine();
+        System.out.println("Entrer le nouveau titre du livre:");
         String nouveauTitre = scanner.nextLine();
-        System.out.println("Entrer le nouvel auteur:");
+        System.out.println("Entrer le nouvel auteur du livre:");
         String nouvelAuteur = scanner.nextLine();
-        gestionnaire.modifierLivre(isbn, nouveauTitre, nouvelAuteur);
-        System.out.println("Livre modifié avec succès.");
+        System.out.println("Entrer la nouvelle édition du livre:");
+        String nouvelleEdition = scanner.nextLine();
+        System.out.println("Entrer la nouvelle année de parution du livre:");
+        int nouvelleAnneeParution = Integer.parseInt(scanner.nextLine());
+        System.out.println("Entrer le nouveau genre du livre:");
+        String nouveauGenre = scanner.nextLine();
+        System.out.println("Entrer le nouvel emplacement du livre:");
+        String nouvelEmplacement = scanner.nextLine();
+        Livre nouveauLivre = new Livre(nouveauTitre, nouvelAuteur, nouvelleEdition, nouvelleAnneeParution, nouveauGenre, nouvelEmplacement);
+        gestionnaire.modifierLivre(titre, auteur, nouveauLivre);
     }
 }
