@@ -1,18 +1,25 @@
 import java.io.Serializable;
+
 public class Livre implements Serializable {
     private static final long serialVersionUID = 1L;
     private String titre;
     private String auteur;
-    private String ISBN;
-    private boolean estReserve;
+    private String edition;
+    private int anneeParution;
+    private String genre;
+    private String emplacement;
+    private boolean estReserve = false;
 
-    public Livre(String titre, String auteur, String ISBN) {
+    public Livre(String titre, String auteur, String edition, int anneeParution, String genre, String emplacement) {
         this.titre = titre;
         this.auteur = auteur;
-        this.ISBN = ISBN;
-        this.estReserve = false;
+        this.edition = edition;
+        this.anneeParution = anneeParution;
+        this.genre = genre;
+        this.emplacement = emplacement;
     }
 
+    // Getters et Setters
     public String getTitre() {
         return titre;
     }
@@ -29,8 +36,36 @@ public class Livre implements Serializable {
         this.auteur = auteur;
     }
 
-    public String getISBN() {
-        return ISBN;
+    public String getEdition() {
+        return edition;
+    }
+
+    public void setEdition(String edition) {
+        this.edition = edition;
+    }
+
+    public int getAnneeParution() {
+        return anneeParution;
+    }
+
+    public void setAnneeParution(int anneeParution) {
+        this.anneeParution = anneeParution;
+    }
+
+    public String getGenre() {
+        return genre;
+    }
+
+    public void setGenre(String genre) {
+        this.genre = genre;
+    }
+
+    public String getEmplacement() {
+        return emplacement;
+    }
+
+    public void setEmplacement(String emplacement) {
+        this.emplacement = emplacement;
     }
 
     public boolean isReserve() {

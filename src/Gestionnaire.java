@@ -35,38 +35,39 @@ public class Gestionnaire {
         }
     }
 
-    public void modifierLivre(String ISBN, String nouveauTitre, String nouvelAuteur) {
-        for (Livre livre : livres) {
-            if (livre.getISBN().equals(ISBN)) {
-                livre.setTitre(nouveauTitre);
-                livre.setAuteur(nouvelAuteur);
+    public void modifierLivre(String titre, String auteur, Livre nouveauLivre) {
+        Livre livre = trouverLivreParTitreEtAuteur(titre, auteur);
+        if (livre != null) {
+            livre.setTitre(nouveauLivre.getTitre());
+            livre.setAuteur(nouveauLivre.getAuteur());
+            livre.setEdition(nouveauLivre.getEdition());
+            livre.setAnneeParution(nouveauLivre.getAnneeParution());
+            livre.setGenre(nouveauLivre.getGenre());
+            livre.setEmplacement(nouveauLivre.getEmplacement());
+            DataManager.sauvegarderLivres(livres);
+            System.out.println("Livre modifié: " + livre.getTitre());
+        } else {
+            System.out.println("Livre non trouvé.");
+        }
+    }
+
+    public void validerRetour(String titre, String auteur) {
+        Livre livre = trouverLivreParTitreEtAuteur(titre, auteur);
+        if (livre != null) {
+            if (livre.isReserve()) {
+                livre.setReserve(false);
                 DataManager.sauvegarderLivres(livres);
-                System.out.println("Livre modifié: " + livre.getTitre());
-                break;
+                System.out.println("Retour validé pour le livre: " + livre.getTitre());
+            } else {
+                System.out.println("Ce livre n'était pas réservé.");
             }
+        } else {
+            System.out.println("Livre non trouvé.");
         }
     }
 
-    public void validerRetour(String ISBN) {
-        for (Livre livre : livres) {
-            if (livre.getISBN().equals(ISBN)) {
-                if (livre.isReserve()) {
-                    livre.setReserve(false);
-                    DataManager.sauvegarderLivres(livres);
-                    System.out.println("Retour validé pour le livre: " + livre.getTitre());
-                } else {
-                    System.out.println("Ce livre n'était pas réservé.");
-                }
-                break;
-            }
-        }
-    }
-
-    public void reserverLivre(String ISBN) {
-        Livre livre = livres.stream()
-                            .filter(l -> l.getISBN().equals(ISBN))
-                            .findFirst()
-                            .orElse(null);
+    public void reserverLivre(String titre, String auteur) {
+        Livre livre = trouverLivreParTitreEtAuteur(titre, auteur);
         if (livre != null && !livre.isReserve()) {
             livre.reserver();
             DataManager.sauvegarderLivres(livres);
@@ -74,6 +75,13 @@ public class Gestionnaire {
         } else {
             System.out.println("Livre non trouvé ou déjà réservé.");
         }
+    }
+
+    private Livre trouverLivreParTitreEtAuteur(String titre, String auteur) {
+        return livres.stream()
+            .filter(livre -> livre.getTitre().equals(titre) && livre.getAuteur().equals(auteur))
+            .findFirst()
+            .orElse(null);
     }
 
     public List<Livre> getLivres() {
