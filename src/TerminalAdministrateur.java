@@ -1,3 +1,4 @@
+import java.time.LocalDate;
 import java.util.Scanner;
 
 public class TerminalAdministrateur {
@@ -65,7 +66,12 @@ public class TerminalAdministrateur {
         System.out.println("Liste des livres réservés:");
         gestionnaire.getLivres().stream()
             .filter(Livre::isReserve)
-            .forEach(livre -> System.out.println(livre.getTitre() + " par " + livre.getAuteur()));
+            .forEach(livre -> {
+                LocalDate now = LocalDate.now();
+                long joursRestants = livre.getDateFinReservation().toEpochDay() - now.toEpochDay();
+                System.out.println("Livre: " + livre.getTitre() + " par " + livre.getAuteur() + ", Réservé par: " +
+                                   livre.getReservedBy().getNom() + ", Jours restants: " + joursRestants);
+            });
     }
 
     private void validerRetourLivre(Scanner scanner) {

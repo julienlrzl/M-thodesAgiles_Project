@@ -20,20 +20,24 @@ public class TerminalUtilisateur {
         boolean continuer = true;
         while (continuer) {
             System.out.println("\nQue souhaitez-vous faire?");
-            System.out.println("1. Rechercher un livre");
-            System.out.println("2. Réserver un livre");
-            System.out.println("3. Quitter");
+            System.out.println("1. Tous les livres");
+            System.out.println("2. Rechercher un livre");
+            System.out.println("3. Réserver un livre");
+            System.out.println("4. Quitter");
             System.out.print("Choisissez une option: ");
             String choix = scanner.nextLine();
 
             switch (choix) {
                 case "1":
-                    rechercherLivres(scanner);
+                    afficherTousLesLivres();
                     break;
                 case "2":
-                    reserverLivre(scanner);
+                    rechercherLivres(scanner);
                     break;
                 case "3":
+                    reserverLivre(scanner);
+                    break;
+                case "4":
                     continuer = false;
                     break;
                 default:
@@ -77,6 +81,20 @@ public class TerminalUtilisateur {
         String titre = scanner.nextLine();
         System.out.println("Entrez l'auteur du livre à réserver:");
         String auteur = scanner.nextLine();
-        gestionnaire.reserverLivre(titre, auteur);
+        if (utilisateurCourant != null) {
+            gestionnaire.reserverLivre(titre, auteur, utilisateurCourant);
+        } else {
+            System.out.println("Aucun utilisateur connecté pour effectuer cette réservation.");
+        }
+    }
+    
+
+    private void afficherTousLesLivres() {
+        System.out.println("Liste de tous les livres disponibles:");
+        gestionnaire.afficherLivres();
+    }
+
+    public Utilisateur getUtilisateurCourant() {
+        return utilisateurCourant;
     }
 }

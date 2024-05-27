@@ -66,16 +66,17 @@ public class Gestionnaire {
         }
     }
 
-    public void reserverLivre(String titre, String auteur) {
+    public void reserverLivre(String titre, String auteur, Utilisateur utilisateur) {
         Livre livre = trouverLivreParTitreEtAuteur(titre, auteur);
         if (livre != null && !livre.isReserve()) {
-            livre.reserver();
+            livre.reserver(utilisateur);
             DataManager.sauvegarderLivres(livres);
             System.out.println("Vous avez réservé le livre: " + livre.getTitre());
         } else {
             System.out.println("Livre non trouvé ou déjà réservé.");
         }
     }
+    
 
     private Livre trouverLivreParTitreEtAuteur(String titre, String auteur) {
         return livres.stream()

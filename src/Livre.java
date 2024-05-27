@@ -1,4 +1,5 @@
 import java.io.Serializable;
+import java.time.LocalDate;
 
 public class Livre implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -9,6 +10,8 @@ public class Livre implements Serializable {
     private String genre;
     private String emplacement;
     private boolean estReserve = false;
+    private LocalDate dateFinReservation;
+    private Utilisateur reservedBy;
 
     public Livre(String titre, String auteur, String edition, int anneeParution, String genre, String emplacement) {
         this.titre = titre;
@@ -72,13 +75,24 @@ public class Livre implements Serializable {
         return estReserve;
     }
 
-    public void reserver() {
+    public void reserver(Utilisateur utilisateur) {
         if (!estReserve) {
             estReserve = true;
-            System.out.println("Le livre a été réservé.");
+            reservedBy = utilisateur;  // Enregistrement de l'utilisateur qui a réservé le livre
+            dateFinReservation = LocalDate.now().plusWeeks(3);  // Réserver pour 3 semaines
+            System.out.println("Le livre a été réservé jusqu'au " + dateFinReservation + " par " + utilisateur.getNom());
         } else {
-            System.out.println("Ce livre est déjà réservé.");
+            System.out.println("Ce livre est déjà réservé jusqu'au " + dateFinReservation + " par " + reservedBy.getNom());
         }
+    }
+    
+
+    public Utilisateur getReservedBy() {
+        return reservedBy;
+    }
+
+    public LocalDate getDateFinReservation() {
+        return dateFinReservation;
     }
 
     public void setReserve(boolean estReserve) {
