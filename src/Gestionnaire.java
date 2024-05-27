@@ -6,9 +6,8 @@ public class Gestionnaire {
     private List<Utilisateur> utilisateurs;
 
     public Gestionnaire() {
-        // Charger les données au démarrage
-        this.livres = DataManager.chargerLivres();
-        this.utilisateurs = DataManager.chargerUtilisateurs();
+        livres = DataManager.chargerLivres();
+        utilisateurs = DataManager.chargerUtilisateurs();
     }
 
     public void ajouterLivre(Livre livre) {
@@ -23,9 +22,10 @@ public class Gestionnaire {
         System.out.println("Utilisateur inscrit: " + utilisateur.getNom());
     }
 
-    public List<Livre> rechercherLivres(String critere) {
+    public List<Livre> rechercherLivres(String titreCritere, String auteurCritere) {
         return livres.stream()
-            .filter(livre -> livre.getTitre().contains(critere) || livre.getAuteur().contains(critere))
+            .filter(livre -> livre.getTitre().toLowerCase().contains(titreCritere.toLowerCase()) &&
+                             livre.getAuteur().toLowerCase().contains(auteurCritere.toLowerCase()))
             .collect(Collectors.toList());
     }
 

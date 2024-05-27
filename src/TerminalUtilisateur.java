@@ -65,7 +65,7 @@ public class TerminalUtilisateur {
     private void rechercherLivres(Scanner scanner) {
         System.out.println("Entrez un critère de recherche (titre ou auteur):");
         String critere = scanner.nextLine();
-        List<Livre> resultats = gestionnaire.rechercherLivres(critere);
+        List<Livre> resultats = gestionnaire.rechercherLivres(critere, critere);
         if (resultats.isEmpty()) {
             System.out.println("Aucun livre trouvé.");
         } else {

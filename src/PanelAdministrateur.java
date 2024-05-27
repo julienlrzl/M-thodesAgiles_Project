@@ -60,14 +60,19 @@ public class PanelAdministrateur extends JPanel {
         textArea.setEditable(false);
         JScrollPane scrollPane = new JScrollPane(textArea);
         StringBuilder reservations = new StringBuilder();
-        gestionnaire.getLivres().stream()
-            .filter(Livre::isReserve)
-            .forEach(book -> reservations.append(book.getTitre()).append(" - ").append(book.getAuteur()).append(", Réservé par: ")
-                .append(book.getReservedBy().getNom()).append(", Jours restants: ")
-                .append(book.getDateFinReservation().minusDays(LocalDate.now().toEpochDay())).append("\n"));
+        for (Livre livre : gestionnaire.getLivres()) {
+            if (livre.isReserve()) {
+                Utilisateur user = livre.getReservedBy();
+                reservations.append(livre.getTitre()).append(" - ").append(livre.getAuteur())
+                             .append(", Réservé par: ").append(user != null ? user.getNom() + " " + user.getPrenom() : "Inconnu")
+                             .append(", Jours restants: ").append(livre.getDateFinReservation().minusDays(LocalDate.now().toEpochDay()))
+                             .append("\n");
+            }
+        }
         textArea.setText(reservations.toString());
         JOptionPane.showMessageDialog(this, scrollPane, "Réservations actuelles", JOptionPane.INFORMATION_MESSAGE);
     }
+    
 
     private void validateReturn() {
         String titre = JOptionPane.showInputDialog("Entrer le titre du livre à valider:");
