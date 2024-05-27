@@ -78,7 +78,7 @@ public class Gestionnaire {
     }
     
 
-    private Livre trouverLivreParTitreEtAuteur(String titre, String auteur) {
+    public Livre trouverLivreParTitreEtAuteur(String titre, String auteur) {
         return livres.stream()
             .filter(livre -> livre.getTitre().equals(titre) && livre.getAuteur().equals(auteur))
             .findFirst()
@@ -91,5 +91,10 @@ public class Gestionnaire {
 
     public List<Utilisateur> getUtilisateurs() {
         return utilisateurs;
+    }
+
+    public void sauvegarderModifications() {
+        DataManager.sauvegarderLivres(livres);
+        DataManager.sauvegarderUtilisateurs(utilisateurs);
     }
 }
