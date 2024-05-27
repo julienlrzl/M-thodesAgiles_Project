@@ -1,6 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
 import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 
 public class PanelAdministrateur extends JPanel {
     private Gestionnaire gestionnaire;
@@ -15,23 +16,29 @@ public class PanelAdministrateur extends JPanel {
 
         JButton btnCreateUser = new JButton("Créer un compte utilisateur");
         JButton btnViewReservations = new JButton("Consulter les réservations");
+        JButton btnModifierReservation = new JButton("Modifier Réservation");
         JButton btnValidateReturn = new JButton("Valider les retours de livres");
         JButton btnAddBook = new JButton("Ajouter un nouveau livre");
         JButton btnModifyBook = new JButton("Modifier les informations d'un livre");
+        JButton btnSupprimerLivre = new JButton("Supprimer Livre");
         JButton btnExit = new JButton("Quitter");
 
         add(btnCreateUser);
         add(btnViewReservations);
+        add(btnModifierReservation);
         add(btnValidateReturn);
         add(btnAddBook);
         add(btnModifyBook);
+        add(btnSupprimerLivre);
         add(btnExit);
 
         btnCreateUser.addActionListener(e -> createUser());
         btnViewReservations.addActionListener(e -> viewReservations());
+        btnModifierReservation.addActionListener(e -> modifierReservation());
         btnValidateReturn.addActionListener(e -> validateReturn());
         btnAddBook.addActionListener(e -> addBook());
         btnModifyBook.addActionListener(e -> modifyBook());
+        btnSupprimerLivre.addActionListener(e -> supprimerLivre());
         btnExit.addActionListener(e -> System.exit(0));
     }
 
@@ -177,5 +184,43 @@ public class PanelAdministrateur extends JPanel {
             }
         }
     }
+
+    private void modifierReservation() {
+        JTextField titreField = new JTextField();
+        JTextField auteurField = new JTextField();
+        JTextField dateField = new JTextField("yyyy-mm-dd");
+        Object[] message = {
+            "Titre:", titreField,
+            "Auteur:", auteurField,
+            "Nouvelle date de fin (yyyy-mm-dd):", dateField
+        };
+
+        int option = JOptionPane.showConfirmDialog(null, message, "Modifier la Réservation", JOptionPane.OK_CANCEL_OPTION);
+        if (option == JOptionPane.OK_OPTION) {
+            try {
+                LocalDate nouvelleDate = LocalDate.parse(dateField.getText());
+                gestionnaire.modifierDateFinReservation(titreField.getText(), auteurField.getText(), nouvelleDate);
+            } catch (DateTimeParseException e) {
+                JOptionPane.showMessageDialog(null, "Format de date invalide.", "Erreur", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }
+    
+    private void supprimerLivre() {
+        JTextField titreField = new JTextField();
+        JTextField auteurField = new JTextField();
+        Object[] message = {
+            "Titre:", titreField,
+            "Auteur:", auteurField
+        };
+    
+        int option = JOptionPane.showConfirmDialog(null, message, "Supprimer Livre", JOptionPane.OK_CANCEL_OPTION);
+        if (option == JOptionPane.OK_OPTION) {
+            gestionnaire.supprimerLivre(titreField.getText(), auteurField.getText());
+        }
+    }
+    
+
+
     
 }

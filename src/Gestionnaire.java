@@ -1,3 +1,4 @@
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -97,4 +98,28 @@ public class Gestionnaire {
         DataManager.sauvegarderLivres(livres);
         DataManager.sauvegarderUtilisateurs(utilisateurs);
     }
+
+    public void modifierDateFinReservation(String titre, String auteur, LocalDate nouvelleDate) {
+        Livre livre = trouverLivreParTitreEtAuteur(titre, auteur);
+        if (livre != null && livre.isReserve()) {
+            livre.setDateFinReservation(nouvelleDate);
+            DataManager.sauvegarderLivres(livres); // Sauvegarder les modifications
+            System.out.println("Date de fin de réservation modifiée pour le livre: " + livre.getTitre());
+        } else {
+            System.out.println("Livre non trouvé ou non réservé.");
+        }
+    }
+
+    public void supprimerLivre(String titre, String auteur) {
+        Livre livre = trouverLivreParTitreEtAuteur(titre, auteur);
+        if (livre != null) {
+            livres.remove(livre);
+            DataManager.sauvegarderLivres(livres); // Mettre à jour la liste des livres
+            System.out.println("Livre supprimé: " + livre.getTitre());
+        } else {
+            System.out.println("Livre non trouvé.");
+        }
+    }
+    
+
 }

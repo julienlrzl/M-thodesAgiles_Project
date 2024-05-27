@@ -95,6 +95,10 @@ public class Livre implements Serializable {
         return dateFinReservation;
     }
 
+    public void setDateFinReservation(LocalDate dateFinReservation) {
+        this.dateFinReservation = dateFinReservation;
+    }
+
     public void setReserve(boolean estReserve) {
         this.estReserve = estReserve;
     }
