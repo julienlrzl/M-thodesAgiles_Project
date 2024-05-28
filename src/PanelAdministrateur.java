@@ -2,6 +2,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
+import java.time.temporal.ChronoUnit;
 
 public class PanelAdministrateur extends JPanel {
     private Gestionnaire gestionnaire;
@@ -67,18 +68,21 @@ public class PanelAdministrateur extends JPanel {
         textArea.setEditable(false);
         JScrollPane scrollPane = new JScrollPane(textArea);
         StringBuilder reservations = new StringBuilder();
+        LocalDate today = LocalDate.now();
         for (Livre livre : gestionnaire.getLivres()) {
             if (livre.isReserve()) {
                 Utilisateur user = livre.getReservedBy();
+                long joursRestants = ChronoUnit.DAYS.between(today, livre.getDateFinReservation());
                 reservations.append(livre.getTitre()).append(" - ").append(livre.getAuteur())
-                             .append(", Réservé par: ").append(user != null ? user.getNom() + " " + user.getPrenom() : "Inconnu")
-                             .append(", Jours restants: ").append(livre.getDateFinReservation().minusDays(LocalDate.now().toEpochDay()))
-                             .append("\n");
+                            .append(", Réservé par: ").append(user != null ? user.getNom() + " " + user.getPrenom() : "Inconnu")
+                            .append(", Jours restants: ").append(joursRestants)
+                            .append("\n");
             }
         }
         textArea.setText(reservations.toString());
         JOptionPane.showMessageDialog(this, scrollPane, "Réservations actuelles", JOptionPane.INFORMATION_MESSAGE);
     }
+
     
 
     private void validateReturn() {
@@ -188,23 +192,24 @@ public class PanelAdministrateur extends JPanel {
     private void modifierReservation() {
         JTextField titreField = new JTextField();
         JTextField auteurField = new JTextField();
-        JTextField dateField = new JTextField("yyyy-mm-dd");
+        JTextField dateField = new JTextField(LocalDate.now().plusDays(1).toString()); // Set default to tomorrow's date
         Object[] message = {
             "Titre:", titreField,
             "Auteur:", auteurField,
             "Nouvelle date de fin (yyyy-mm-dd):", dateField
         };
-
+    
         int option = JOptionPane.showConfirmDialog(null, message, "Modifier la Réservation", JOptionPane.OK_CANCEL_OPTION);
         if (option == JOptionPane.OK_OPTION) {
             try {
                 LocalDate nouvelleDate = LocalDate.parse(dateField.getText());
                 gestionnaire.modifierDateFinReservation(titreField.getText(), auteurField.getText(), nouvelleDate);
+                JOptionPane.showMessageDialog(null, "Date de fin de réservation mise à jour.", "Mise à jour Réussie", JOptionPane.INFORMATION_MESSAGE);
             } catch (DateTimeParseException e) {
                 JOptionPane.showMessageDialog(null, "Format de date invalide.", "Erreur", JOptionPane.ERROR_MESSAGE);
             }
         }
-    }
+    }    
     
     private void supprimerLivre() {
         JTextField titreField = new JTextField();
