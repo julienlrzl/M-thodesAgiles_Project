@@ -2,14 +2,25 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
 
+/**
+ * Classe TerminalUtilisateur gère l'interface utilisateur pour interagir avec le système de gestion de la bibliothèque.
+ */
 public class TerminalUtilisateur {
     private Gestionnaire gestionnaire;
     private Utilisateur utilisateurCourant;
 
+    /**
+     * Constructeur qui initialise le gestionnaire avec lequel interagir.
+     * @param gestionnaire Le gestionnaire utilisé pour les opérations sur les livres et utilisateurs.
+     */
     public TerminalUtilisateur(Gestionnaire gestionnaire) {
         this.gestionnaire = gestionnaire;
     }
 
+    /**
+     * Lance l'interface de ligne de commande pour l'utilisateur, permettant diverses opérations telles que la connexion, la recherche de livres,
+     * la réservation de livres, et la consultation de tous les livres disponibles.
+     */
     public void lancerInterface() {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Bienvenue dans le système de gestion de la bibliothèque!");
@@ -48,8 +59,11 @@ public class TerminalUtilisateur {
         scanner.close();
     }
 
+    /**
+     * Connecte l'utilisateur au système en utilisant son ID. Si l'utilisateur n'est pas trouvé, il sera connecté comme invité.
+     * @param userId L'ID de l'utilisateur pour la connexion.
+     */
     private void connecterUtilisateur(String userId) {
-        // Recherche de l'utilisateur par ID
         utilisateurCourant = gestionnaire.getUtilisateurs().stream()
             .filter(u -> u.getId().equals(userId))
             .findFirst()
@@ -62,6 +76,10 @@ public class TerminalUtilisateur {
         }
     }
 
+    /**
+     * Recherche des livres basée sur un critère de recherche entré par l'utilisateur.
+     * @param scanner L'outil de saisie pour entrer les critères de recherche.
+     */
     private void rechercherLivres(Scanner scanner) {
         System.out.println("Entrez un critère de recherche (titre ou auteur):");
         String critere = scanner.nextLine();
@@ -76,6 +94,10 @@ public class TerminalUtilisateur {
         }
     }
 
+    /**
+     * Permet à l'utilisateur connecté de réserver un livre.
+     * @param scanner L'outil de saisie pour entrer le titre et l'auteur du livre à réserver.
+     */
     private void reserverLivre(Scanner scanner) {
         System.out.println("Entrez le titre du livre à réserver:");
         String titre = scanner.nextLine();
@@ -88,12 +110,18 @@ public class TerminalUtilisateur {
         }
     }
     
-
+    /**
+     * Affiche tous les livres disponibles dans la bibliothèque.
+     */
     private void afficherTousLesLivres() {
         System.out.println("Liste de tous les livres disponibles:");
         gestionnaire.afficherLivres();
     }
 
+    /**
+     * Retourne l'utilisateur actuellement connecté.
+     * @return L'utilisateur connecté.
+     */
     public Utilisateur getUtilisateurCourant() {
         return utilisateurCourant;
     }

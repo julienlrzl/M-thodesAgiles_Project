@@ -1,13 +1,26 @@
 import java.time.LocalDate;
 import java.util.Scanner;
 
+/**
+ * Classe TerminalAdministrateur gère l'interface de ligne de commande pour les opérations administratives
+ * dans le système de gestion de bibliothèque.
+ */
 public class TerminalAdministrateur {
     private Gestionnaire gestionnaire;
 
+    /**
+     * Constructeur qui initialise le gestionnaire.
+     * @param gestionnaire Le gestionnaire utilisé pour opérer sur les données de livres et d'utilisateurs.
+     */
     public TerminalAdministrateur(Gestionnaire gestionnaire) {
         this.gestionnaire = gestionnaire;
     }
 
+    /**
+     * Lance l'interface de ligne de commande pour l'administration.
+     * Permet de créer des comptes utilisateurs, consulter les réservations, valider les retours de livres,
+     * ajouter ou modifier des livres.
+     */
     public void lancerInterface() {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Interface Administrateur de la Bibliothèque");
@@ -51,6 +64,10 @@ public class TerminalAdministrateur {
         scanner.close();
     }
 
+    /**
+     * Crée un compte utilisateur en demandant le nom, le prénom, et l'ID de l'utilisateur.
+     * @param scanner L'outil de saisie pour entrer les informations utilisateur.
+     */
     private void creerCompteUtilisateur(Scanner scanner) {
         System.out.println("Entrer le nom de l'utilisateur:");
         String nom = scanner.nextLine();
@@ -62,6 +79,10 @@ public class TerminalAdministrateur {
         System.out.println("Utilisateur créé avec succès.");
     }
 
+    /**
+     * Consulte et affiche les réservations actuelles, y compris les détails des livres et les jours restants
+     * avant la fin de la réservation.
+     */
     private void consulterReservations() {
         System.out.println("Liste des livres réservés:");
         gestionnaire.getLivres().stream()
@@ -74,6 +95,10 @@ public class TerminalAdministrateur {
             });
     }
 
+    /**
+     * Valide le retour d'un livre réservé en demandant son titre et son auteur.
+     * @param scanner L'outil de saisie pour entrer les informations du livre.
+     */
     private void validerRetourLivre(Scanner scanner) {
         System.out.println("Entrer le titre du livre à valider:");
         String titre = scanner.nextLine();
@@ -82,6 +107,11 @@ public class TerminalAdministrateur {
         gestionnaire.validerRetour(titre, auteur);
     }
 
+    /**
+     * Ajoute un livre au système en demandant les informations nécessaires comme le titre, l'auteur,
+     * l'édition, l'année de parution, le genre, et l'emplacement.
+     * @param scanner L'outil de saisie pour entrer les informations du livre.
+     */
     private void ajouterLivre(Scanner scanner) {
         System.out.println("Entrer le titre du livre:");
         String titre = scanner.nextLine();
@@ -99,6 +129,10 @@ public class TerminalAdministrateur {
         gestionnaire.ajouterLivre(livre);
     }
 
+    /**
+     * Modifie les informations d'un livre existant après avoir entré son titre et auteur pour l'identification.
+     * @param scanner L'outil de saisie pour modifier les informations du livre.
+     */
     private void modifierLivre(Scanner scanner) {
         System.out.println("Entrer le titre du livre à modifier:");
         String titre = scanner.nextLine();

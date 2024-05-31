@@ -4,17 +4,29 @@ import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.time.temporal.ChronoUnit;
 
+/**
+ * Panel fournissant l'interface administrative pour la gestion de la bibliothèque.
+ * Permet aux administrateurs de gérer les comptes utilisateurs, les livres et les réservations.
+ */
 public class PanelAdministrateur extends JPanel {
     private Gestionnaire gestionnaire;
 
+    /**
+     * Constructeur qui initialise le panel administrateur avec un gestionnaire.
+     * @param gestionnaire Le gestionnaire contenant la logique métier de gestion des livres et utilisateurs.
+     */
     public PanelAdministrateur(Gestionnaire gestionnaire) {
         this.gestionnaire = gestionnaire;
         initUI();
     }
 
+    /**
+     * Initialise l'interface utilisateur du panel administrateur avec tous les composants nécessaires.
+     */
     private void initUI() {
-        setLayout(new GridLayout(6, 2, 10, 10)); // Layout to organize buttons
+        setLayout(new GridLayout(6, 2, 10, 10)); // Configuration du layout pour organiser les boutons
 
+        // Création et ajout des boutons
         JButton btnCreateUser = new JButton("Créer un compte utilisateur");
         JButton btnViewReservations = new JButton("Consulter les réservations");
         JButton btnModifierReservation = new JButton("Modifier Réservation");
@@ -33,6 +45,7 @@ public class PanelAdministrateur extends JPanel {
         add(btnSupprimerLivre);
         add(btnExit);
 
+        // Configuration des écouteurs pour les actions des boutons
         btnCreateUser.addActionListener(e -> createUser());
         btnViewReservations.addActionListener(e -> viewReservations());
         btnModifierReservation.addActionListener(e -> modifierReservation());
@@ -43,11 +56,14 @@ public class PanelAdministrateur extends JPanel {
         btnExit.addActionListener(e -> System.exit(0));
     }
 
+    /**
+     * Crée un nouvel utilisateur via une boîte de dialogue.
+     */
     private void createUser() {
         JTextField nameField = new JTextField();
         JTextField surnameField = new JTextField();
         JTextField idField = new JTextField();
-        final JComponent[] inputs = new JComponent[] {
+        final JComponent[] inputs = {
             new JLabel("Nom"),
             nameField,
             new JLabel("Prénom"),
@@ -63,6 +79,9 @@ public class PanelAdministrateur extends JPanel {
         }
     }
 
+    /**
+     * Affiche les réservations actuelles sous forme de texte.
+     */
     private void viewReservations() {
         JTextArea textArea = new JTextArea(10, 30);
         textArea.setEditable(false);
@@ -83,14 +102,18 @@ public class PanelAdministrateur extends JPanel {
         JOptionPane.showMessageDialog(this, scrollPane, "Réservations actuelles", JOptionPane.INFORMATION_MESSAGE);
     }
 
-    
-
+    /**
+     * Permet la validation des retours de livres à l'aide de boîtes de dialogue pour saisir le titre et l'auteur.
+     */
     private void validateReturn() {
         String titre = JOptionPane.showInputDialog("Entrer le titre du livre à valider:");
         String auteur = JOptionPane.showInputDialog("Entrer l'auteur du livre à valider:");
         gestionnaire.validerRetour(titre, auteur);
     }
 
+    /**
+     * Ajoute un livre au système via une série de boîtes de dialogue pour saisir les détails nécessaires.
+     */
     private void addBook() {
         JTextField titleField = new JTextField();
         JTextField authorField = new JTextField();
@@ -98,8 +121,8 @@ public class PanelAdministrateur extends JPanel {
         JTextField yearField = new JTextField();
         JTextField genreField = new JTextField();
         JTextField locationField = new JTextField();
-        
-        final JComponent[] inputs = new JComponent[] {
+
+        final JComponent[] inputs = {
             new JLabel("Titre"),
             titleField,
             new JLabel("Auteur"),
@@ -113,7 +136,7 @@ public class PanelAdministrateur extends JPanel {
             new JLabel("Emplacement"),
             locationField
         };
-        
+
         int result = JOptionPane.showConfirmDialog(this, inputs, "Ajouter un nouveau livre", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
         if (result == JOptionPane.OK_OPTION) {
             try {
@@ -123,7 +146,7 @@ public class PanelAdministrateur extends JPanel {
                 int anneeParution = Integer.parseInt(yearField.getText());  // Handle number format exception
                 String genre = genreField.getText();
                 String emplacement = locationField.getText();
-    
+
                 Livre nouveauLivre = new Livre(titre, auteur, edition, anneeParution, genre, emplacement);
                 gestionnaire.ajouterLivre(nouveauLivre);
                 JOptionPane.showMessageDialog(this, "Livre ajouté avec succès: " + titre, "Livre Ajouté", JOptionPane.INFORMATION_MESSAGE);
@@ -132,28 +155,28 @@ public class PanelAdministrateur extends JPanel {
             }
         }
     }
-    
+
+    /**
+     * Modifie un livre existant en utilisant les informations fournies par l'utilisateur.
+     */
     private void modifyBook() {
-        // Demande à l'utilisateur de saisir le titre et l'auteur pour identifier le livre à modifier
         String titre = JOptionPane.showInputDialog(this, "Entrer le titre du livre à modifier:");
         String auteur = JOptionPane.showInputDialog(this, "Entrer l'auteur du livre à modifier:");
-    
-        // Trouver le livre correspondant
+
         Livre livre = gestionnaire.trouverLivreParTitreEtAuteur(titre, auteur);
         if (livre == null) {
             JOptionPane.showMessageDialog(this, "Livre non trouvé.", "Erreur", JOptionPane.ERROR_MESSAGE);
             return;
         }
-    
-        // Création des champs de texte avec les valeurs actuelles du livre
+
         JTextField titleField = new JTextField(livre.getTitre());
         JTextField authorField = new JTextField(livre.getAuteur());
         JTextField editionField = new JTextField(livre.getEdition());
         JTextField yearField = new JTextField(String.valueOf(livre.getAnneeParution()));
         JTextField genreField = new JTextField(livre.getGenre());
         JTextField locationField = new JTextField(livre.getEmplacement());
-    
-        final JComponent[] inputs = new JComponent[] {
+
+        final JComponent[] inputs = {
             new JLabel("Titre"),
             titleField,
             new JLabel("Auteur"),
@@ -167,21 +190,18 @@ public class PanelAdministrateur extends JPanel {
             new JLabel("Emplacement"),
             locationField
         };
-    
-        // Affiche un dialogue de modification avec les champs pré-remplis
+
         int result = JOptionPane.showConfirmDialog(this, inputs, "Modifier le livre", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
         if (result == JOptionPane.OK_OPTION) {
             try {
-                // Mise à jour du livre avec les nouvelles valeurs
                 livre.setTitre(titleField.getText());
                 livre.setAuteur(authorField.getText());
                 livre.setEdition(editionField.getText());
                 livre.setAnneeParution(Integer.parseInt(yearField.getText()));
                 livre.setGenre(genreField.getText());
                 livre.setEmplacement(locationField.getText());
-    
-                // Sauvegarder les changements
-                gestionnaire.sauvegarderModifications();  // Assurez-vous que cette méthode existe pour sauvegarder les changements dans le gestionnaire
+
+                gestionnaire.sauvegarderModifications();  // Ensure this method exists to save the changes in the manager
                 JOptionPane.showMessageDialog(this, "Livre modifié avec succès.", "Modification Réussie", JOptionPane.INFORMATION_MESSAGE);
             } catch (NumberFormatException e) {
                 JOptionPane.showMessageDialog(this, "L'année de parution doit être un nombre valide.", "Erreur de Format", JOptionPane.ERROR_MESSAGE);
@@ -189,6 +209,9 @@ public class PanelAdministrateur extends JPanel {
         }
     }
 
+    /**
+     * Modifie la date de fin de réservation d'un livre réservé.
+     */
     private void modifierReservation() {
         JTextField titreField = new JTextField();
         JTextField auteurField = new JTextField();
@@ -198,7 +221,7 @@ public class PanelAdministrateur extends JPanel {
             "Auteur:", auteurField,
             "Nouvelle date de fin (yyyy-mm-dd):", dateField
         };
-    
+
         int option = JOptionPane.showConfirmDialog(null, message, "Modifier la Réservation", JOptionPane.OK_CANCEL_OPTION);
         if (option == JOptionPane.OK_OPTION) {
             try {
@@ -209,8 +232,11 @@ public class PanelAdministrateur extends JPanel {
                 JOptionPane.showMessageDialog(null, "Format de date invalide.", "Erreur", JOptionPane.ERROR_MESSAGE);
             }
         }
-    }    
-    
+    }
+
+    /**
+     * Supprime un livre spécifié par l'utilisateur.
+     */
     private void supprimerLivre() {
         JTextField titreField = new JTextField();
         JTextField auteurField = new JTextField();
@@ -218,14 +244,10 @@ public class PanelAdministrateur extends JPanel {
             "Titre:", titreField,
             "Auteur:", auteurField
         };
-    
+
         int option = JOptionPane.showConfirmDialog(null, message, "Supprimer Livre", JOptionPane.OK_CANCEL_OPTION);
         if (option == JOptionPane.OK_OPTION) {
             gestionnaire.supprimerLivre(titreField.getText(), auteurField.getText());
         }
     }
-    
-
-
-    
 }

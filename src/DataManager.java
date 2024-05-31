@@ -2,10 +2,20 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Classe utilitaire pour gérer la persistance des données des livres et des utilisateurs.
+ * Elle permet de sauvegarder et de charger des objets {@link Livre} et {@link Utilisateur} dans des fichiers sérialisés.
+ */
 public class DataManager {
-    private static final String LIVRE_FILE = "livres.ser";
-    private static final String UTILISATEUR_FILE = "utilisateurs.ser";
+    private static final String LIVRE_FILE = "livres.ser"; // Le chemin du fichier pour sauvegarder les livres
+    private static final String UTILISATEUR_FILE = "utilisateurs.ser"; // Le chemin du fichier pour sauvegarder les utilisateurs
 
+    /**
+     * Sauvegarde une liste de livres dans un fichier sérialisé.
+     *
+     * @param livres La liste des livres à sauvegarder.
+     * @throws IOException Si une erreur d'entrée/sortie se produit pendant la sauvegarde.
+     */
     public static void sauvegarderLivres(List<Livre> livres) {
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(LIVRE_FILE))) {
             oos.writeObject(livres);
@@ -14,6 +24,14 @@ public class DataManager {
         }
     }
 
+    /**
+     * Charge la liste des livres à partir d'un fichier sérialisé.
+     *
+     * @return La liste des livres chargés.
+     * @throws FileNotFoundException Si le fichier des livres n'est pas trouvé.
+     * @throws IOException Si une erreur d'entrée/sortie se produit pendant le chargement.
+     * @throws ClassNotFoundException Si la classe des objets sérialisés n'est pas trouvée.
+     */
     public static List<Livre> chargerLivres() {
         try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(LIVRE_FILE))) {
             return (List<Livre>) ois.readObject();
@@ -25,6 +43,12 @@ public class DataManager {
         }
     }
 
+    /**
+     * Sauvegarde une liste d'utilisateurs dans un fichier sérialisé.
+     *
+     * @param utilisateurs La liste des utilisateurs à sauvegarder.
+     * @throws IOException Si une erreur d'entrée/sortie se produit pendant la sauvegarde.
+     */
     public static void sauvegarderUtilisateurs(List<Utilisateur> utilisateurs) {
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(UTILISATEUR_FILE))) {
             oos.writeObject(utilisateurs);
@@ -33,6 +57,14 @@ public class DataManager {
         }
     }
 
+    /**
+     * Charge la liste des utilisateurs à partir d'un fichier sérialisé.
+     *
+     * @return La liste des utilisateurs chargés.
+     * @throws FileNotFoundException Si le fichier des utilisateurs n'est pas trouvé.
+     * @throws IOException Si une erreur d'entrée/sortie se produit pendant le chargement.
+     * @throws ClassNotFoundException Si la classe des objets sérialisés n'est pas trouvée.
+     */
     public static List<Utilisateur> chargerUtilisateurs() {
         try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(UTILISATEUR_FILE))) {
             return (List<Utilisateur>) ois.readObject();
